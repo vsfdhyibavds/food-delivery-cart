@@ -1,11 +1,11 @@
-import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import CartItem from "./CartItem";
 import "./Cart.css";
 
 export default function Cart() {
   const [cartItems, setCartItems] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("http://localhost:3000/dishes")
@@ -35,16 +35,22 @@ export default function Cart() {
       )
     );
   };
+
+  const handleCheckout = () => {
+    navigate("/checkout");
+  };
+
   return (
     <div>
       {cartItems.map((item) => (
         <CartItem
           key={item.id}
           item={item}
-          onIncraese={() => handleIncrease(item.id)}
+          onIncrease={() => handleIncrease(item.id)}
           onDecrease={() => handleDecrease(item.id)}
         />
       ))}
+      <button onClick={handleCheckout}>Proceed to Checkout</button>
     </div>
   );
 }
