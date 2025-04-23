@@ -4,7 +4,7 @@ import { useState } from "react";
 import CartItem from "./CartItem";
 import "./Cart.css";
 
-export default function Cart() {
+export default function CartUpdated() {
   const [cartItems, setCartItems] = useState([]);
   const [isCheckout, setIsCheckout] = useState(false);
 

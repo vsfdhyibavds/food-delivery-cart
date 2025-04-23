@@ -1,10 +1,10 @@
 import React from "react";
-import Cart from "./components/cart/Cart";
+import CartUpdated from "./components/cart/CartUpdated";
 
 export default function App() {
   return (
     <div>
-      <Cart />
+      <CartUpdated />
     </div>
   );
 }
