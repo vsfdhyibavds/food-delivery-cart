@@ -35,6 +35,14 @@ export default function Cart() {
       )
     );
   };
+  const handleCheckout = () => {
+    const totalPrice = cartItems.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
+    alert(`Total price: $${totalPrice.toFixed(2)}. Proceeding to checkout...`);
+  };
+
   return (
     <div>
       {cartItems.map((item) => (
@@ -45,6 +53,9 @@ export default function Cart() {
           onDecrease={() => handleDecrease(item.id)}
         />
       ))}
+      <button className="checkout-button" onClick={handleCheckout}>
+        Checkout
+      </button>
     </div>
   );
 }
