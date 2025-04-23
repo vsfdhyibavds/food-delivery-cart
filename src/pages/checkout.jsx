@@ -1,22 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
+import { CartContext } from "../context/CartContext";
 
 export default function Checkout() {
-  const [cartItems, setCartItems] = useState([]);
+  const { cartItems } = useContext(CartContext);
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
-
-  useEffect(() => {
-    fetch("http://localhost:3000/dishes")
-      .then((res) => res.json())
-      .then((data) => {
-        const updatedData = data.map((item) => ({
-          ...item,
-          quantity: 1,
-        }));
-        setCartItems(updatedData);
-      });
-  }, []);
 
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,

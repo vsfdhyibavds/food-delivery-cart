@@ -1,40 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import CartItem from "./CartItem";
 import "./Cart.css";
+import { CartContext } from "../../context/CartContext";
 
 export default function Cart() {
-  const [cartItems, setCartItems] = useState([]);
+  const { cartItems, initializeCart, increaseQuantity, decreaseQuantity } = useContext(CartContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:3000/dishes")
-      .then((res) => res.json())
-      .then((data) => {
-        const updatedData = data.map((item) => ({
-          ...item,
-          quantity: 1,
-        }));
-        setCartItems(updatedData);
-      });
-  }, []);
-
-  const handleIncrease = (id) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-      )
-    );
-  };
-  const handleDecrease = (id) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
-          : item
-      )
-    );
-  };
+    if (cartItems.length === 0) {
+      fetch("http://localhost:3000/dishes")
+        .then((res) => res.json())
+        .then((data) => {
+          initializeCart(data);
+        });
+    }
+  }, [cartItems, initializeCart]);
 
   const handleCheckout = () => {
     navigate("/checkout");
@@ -46,8 +28,8 @@ export default function Cart() {
         <CartItem
           key={item.id}
           item={item}
-          onIncrease={() => handleIncrease(item.id)}
-          onDecrease={() => handleDecrease(item.id)}
+          onIncrease={() => increaseQuantity(item.id)}
+          onDecrease={() => decreaseQuantity(item.id)}
         />
       ))}
       <button onClick={handleCheckout}>Proceed to Checkout</button>
